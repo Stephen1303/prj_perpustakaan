@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prj_perpustakaan/home_screen.dart';
+import 'package:prj_perpustakaan/profile_screen.dart';
+import 'package:prj_perpustakaan/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,9 +15,9 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _children = [
     const HomeScreen(),
-    //const SearchScreen(),
-    //const FavoritScreen(),
-    //const ProfileScreen()
+    const SearchScreen(),
+    //const FavoriteScreen(),
+    const ProfileScreen()
   ];
 
   @override
