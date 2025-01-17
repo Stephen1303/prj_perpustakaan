@@ -11,7 +11,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = false;
   String fullName = "";
   String userName = "";
-  int favoritCandiCount = 0;
+  int favoritBukuCount = 0;
 
   void signIn() {
     // setState(() {
@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Expanded(
                         child: Text(
-                      ': $favoritCandiCount',
+                      ': $favoritBukuCount',
                       style: TextStyle(fontSize: 18),
                     )),
                     if (isSignedIn) Icon(Icons.edit),

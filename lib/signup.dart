@@ -15,9 +15,10 @@ class _SignupState extends State<Signup> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  
   String _errorText = '';
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   void _signUp() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -25,7 +26,6 @@ class _SignupState extends State<Signup> {
     final String name = _nameController.text.trim();
     final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
-
     if (password.length < 8 ||
         !password.contains(RegExp(r'[A-Z]')) ||
         !password.contains(RegExp(r'[a-z]')) ||
@@ -37,26 +37,16 @@ class _SignupState extends State<Signup> {
       });
       return;
     }
+    // Menguji Debugging
     // print('*** Sign up berhasil!');
     // print('Nama: $name');
     // print('Nama Pengguna: $username');
     // print('Password: $password');
 
-    if (name.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
-      final key = encrypt.Key.fromLength(32);
-      final iv = encrypt.IV.fromLength(16);
-
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
-      final encryptedName = encrypter.encrypt(name, iv: iv);
-      final encryptedUserName = encrypter.encrypt(username, iv: iv);
-      final encryptedPassword = encrypter.encrypt(password, iv: iv);
-
-      prefs.setString('fulname', encryptedName.base64);
-      prefs.setString('username', encryptedUserName.base64);
-      prefs.setString('password', encryptedPassword.base64);
-      prefs.setString('key', key.base64);
-      prefs.setString('iv', iv.base64);
-    }
+    // Format : prefs.setString(key, value);
+    prefs.setString('fulname', name);
+    prefs.setString('username', username);
+    prefs.setString('password', password);
 
     Navigator.pushReplacementNamed(context, '/signin');
   }
@@ -136,7 +126,7 @@ class _SignupState extends State<Signup> {
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }

@@ -1,90 +1,70 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
+  import 'package:flutter/gestures.dart';
+  import 'package:flutter/material.dart';
+  import 'package:shared_preferences/shared_preferences.dart';
+  import 'package:encrypt/encrypt.dart' as encrypt;
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+  class Signin extends StatefulWidget {
+    const Signin({super.key});
 
-  @override
-  State<Signin> createState() => _SigninState();
-}
+    @override
+    State<Signin> createState() => _SigninState();
+  }
 
-class _SigninState extends State<Signin> {
-  //TODO 1 : Variabel
+  class _SigninState extends State<Signin> {
+    //TODO 1 : Variabel
   final TextEditingController _usernameController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   String _errorText = "";
   bool _isSignedIn = false;
   bool _obscurePassword = true;
 
-  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
-      SharedPreferences sharedPreferences) async {
-    final encryptedUsername = sharedPreferences.getString('username') ?? '';
-    final encryptedPassword = sharedPreferences.getString('password') ?? '';
-    final keyString = sharedPreferences.getString('key') ?? '';
-    final ivString = sharedPreferences.getString('iv') ?? '';
-
-    final encrypt.Key key = encrypt.Key.fromBase64(keyString);
-    final iv = encrypt.IV.fromBase64(ivString);
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final decryptedUsername = encrypter.decrypt64(encryptedUsername, iv: iv);
-    final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
-
-    // Mengembalikan data terdekripsi
-    return {'username': decryptedUsername, 'password': decryptedPassword};
-  }
-
   void _signIn() async {
-    try {
-      final Future<SharedPreferences> prefsFuture =
-          SharedPreferences.getInstance();
-      final String username = _usernameController.text;
-      final String password = _passwordController.text;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String savedUsername = prefs.getString('username') ?? '';
+    final String savedPassword = prefs.getString('password') ?? '';
+    final String enteredUsername = _usernameController.text.trim();
+    final String enteredPassword = _passwordController.text.trim();
 
-      print('Sign in attempt');
-      if (username.isNotEmpty && password.isNotEmpty) {
-        final SharedPreferences prefs = await prefsFuture;
-        final data = await _retrieveAndDecryptDataFromPrefs(prefs);
-        if (data.isNotEmpty) {
-          final decryptedUsername = data['username'];
-          final decryptedPassword = data['password'];
-          //print data setelah enkripsi !
-          if (username == decryptedUsername && password == decryptedPassword) {
-            _errorText = '';
-            _isSignedIn = true;
-            prefs.setBool('isSignedIn', true);
-            // Pemanggilan untuk menghapus semua halaman dalam tumpukan navigasi
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            });
-            // Sign in berhasil, navigasikan ke layar utama
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pushReplacementNamed(context, '/');
-            });
-            print('Sign in succeeded');
-          } else {
-            print('Username or password is incorrect');
-          }
-        } else {
-          print('No stored credentials found');
-        }
-      } else {
-        print('Username and password cannot be empty');
-        // Tambahkan pesan untuk kasus ketika username atau password kosong
-      }
-    } catch (e) {
-      print('An error occurred: $e');
+    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
+      setState(() {
+        _errorText = 'Nama Pengguna dan Kata Sandi harus diisi';
+      });
+      return;
+    }
+    if (savedUsername.isEmpty || savedPassword.isEmpty) {
+      setState(() {
+        _errorText =
+            'Pengguna belum tedaftar : Silahkan daftar terlebih dahulu';
+      });
+      return;
+    }
+
+    if (enteredUsername == savedUsername && enteredPassword == savedPassword) {
+      setState(() {
+        _errorText = '';
+        _isSignedIn = true;
+        prefs.setBool('isSignIn', true);
+      });
+
+      //Pemanggilan untuk menghapus semua halaman dalam tumpukan navigasi
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      });
+      //Sign in berhasil, navigasikan ke layar utama
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/');
+      });
+    } else {
+      setState(() {
+        _errorText = 'Nama Pengguna atau Kata Sandi SALAH!!';
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO 2 : APPBAR
+        //TODO 2 : APPBAR
         appBar: AppBar(
           title: Text('Sign In'),
         ),
@@ -131,11 +111,7 @@ class _SigninState extends State<Signin> {
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        _signIn();
-                      },
-                      child: Text('Sign In')),
+                  ElevatedButton(onPressed: () {}, child: Text('Sign In')),
                   //TODO 8 : TextButton Sign Up
                   // TextButton(
                   //     onPressed: () {},
@@ -156,7 +132,6 @@ class _SigninState extends State<Signin> {
               )),
             ),
           ),
-        )
-    );
+        ));
+    }
   }
-}
