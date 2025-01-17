@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:prj_perpustakaan/data/buku_data.dart';
 import 'package:prj_perpustakaan/models/buku.dart';
+import 'package:flutter/gestures.dart';
 
 class DetailScreen extends StatefulWidget {
   final Buku buku;
@@ -69,20 +70,15 @@ class _DetailScreenState extends State<DetailScreen> {
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        'Rp'+ widget.buku.harga.toString().replaceAll(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), r'1.'),
-                        style: const TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                      Row(
+                        children : [
+                          Text(
+                            'Favorite'
+                          ),
+                          IconButton(
+                            onPressed: () {}, icon: Icon(Icons.favorite_border)),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children : [
-                      IconButton(
-                        onPressed: () {}, icon: Icon(Icons.favorite_border)),
-                      Text(
-                        'Favorite'
-                      )
                     ],
                   ),
 
@@ -145,6 +141,22 @@ class _DetailScreenState extends State<DetailScreen> {
                       Text(": ${widget.buku.published}")
                     ],
                   ),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: 'Mulai Baca...',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 16),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushNamed(context, '');
+                            }),
+                  )
+                    ],
+                  ),
                   const SizedBox(
                     height: 16,
                   ),
@@ -161,68 +173,12 @@ class _DetailScreenState extends State<DetailScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text(widget.buku.description)
+                  Text(widget.buku.description, 
+                    textAlign: TextAlign.justify,  
+                  )
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Divider(
-                    color: Colors.deepPurple.shade100,
-                  ),
-                  const Text('Produk Lainnya',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.buku.imageUrls.length,
-                      itemBuilder: (content, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            elevation: 4,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: widget.buku.imageUrls[index],
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    'Tap untuk memperbesar',
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
