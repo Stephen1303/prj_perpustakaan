@@ -7,7 +7,7 @@ class Buku {
   final int harga;
   final String imageAsset;
   final List<String> imageUrls;
-  bool isFavorite;
+  final String teks;
 
   Buku({
     required this.title,
@@ -18,7 +18,7 @@ class Buku {
     required this.harga,
     required this.imageAsset,
     required this.imageUrls,
-    this.isFavorite = false,
+    required this.teks
   });
 
 }

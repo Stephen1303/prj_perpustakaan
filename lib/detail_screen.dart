@@ -132,20 +132,28 @@ class _DetailScreenState extends State<DetailScreen> {
                       Text(": ${widget.buku.published}")
                     ],
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: 'Mulai Baca...',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                            fontSize: 16),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(context, '');
-                            }),
-                  )
+                      GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/bacabuku',
+                        arguments: widget.buku, // Kirim buku yang sedang ditampilkan
+                      );
+                    },
+                    child: Text(
+                      'Mulai Baca...',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                     ],
                   ),
                   const SizedBox(

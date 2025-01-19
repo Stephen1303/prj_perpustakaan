@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:prj_perpustakaan/bacabuku_screen.dart';
 import 'package:prj_perpustakaan/home_screen.dart';
 import 'package:prj_perpustakaan/main_screen.dart';
+import 'package:prj_perpustakaan/models/buku.dart';
 import 'package:prj_perpustakaan/signin.dart';
 import 'package:prj_perpustakaan/signup.dart';
 
@@ -26,6 +28,10 @@ class MyApp extends StatelessWidget {
         '/homescreen': (context) => const HomeScreen(),
         '/signin': (context) => const Signin(),
         '/signup': (context) => const Signup(),
+        '/bacabuku': (context) {
+          final buku = ModalRoute.of(context)!.settings.arguments as Buku;
+          return BacabukuScreen(buku: buku);
+        },
       },
     );
   }
