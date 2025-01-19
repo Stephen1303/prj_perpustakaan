@@ -69,16 +69,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         widget.buku.title,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children : [
-                          Text(
-                            'Favorite'
-                          ),
-                          IconButton(
-                            onPressed: () {}, icon: Icon(Icons.favorite_border)),
-                        ],
-                      ),
+                      )
                     ],
                   ),
 

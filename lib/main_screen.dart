@@ -53,12 +53,6 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.favorite, color: Colors.deepPurple),
                   label: "Favorite"),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.deepPurple,
-                  ),
-                  label: "Profile")
             ],
             selectedItemColor: Colors.deepPurple,
             unselectedItemColor: Colors.deepPurple[100],

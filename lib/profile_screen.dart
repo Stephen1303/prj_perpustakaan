@@ -142,37 +142,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 4,
                 ),
-                Divider(color: Colors.deepPurple[100]),
-                SizedBox(
-                  height: 4,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.favorite, color: Colors.red),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Favorit',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        child: Text(
-                      ': $favoritBukuCount',
-                      style: TextStyle(fontSize: 18),
-                    )),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-
                 //TODO 4 : Profile Action
                 SizedBox(
                   height: 4,
